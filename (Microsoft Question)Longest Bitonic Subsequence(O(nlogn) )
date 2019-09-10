@@ -1,0 +1,131 @@
+/*  
+Algorithm:
+
+Step 1: Define 4 Auxiliary arrays of size n:
+        increasing[n] to calculate LIS of the 
+        array  tail1[n] to store the values for 
+        LIS for increasing[n]
+        decreasing[n] to calculate LIS of the 
+        array  tail2[n] to store the values for
+        LIS for decreasing[n]
+Step 2: Find LIS for increasing array
+Step 3: Reverse array and store it in decreasing
+Step 4: Find LIS for decreasing array
+Step 5: Longest Bitonicc SubSequence length now 
+        will be max of tail1[i] + tail2[i] + 1
+*/
+
+//Time complexity : O(nlogn)
+#include <stdio.h>
+
+//binary search
+int ceilindex(int a[],int l,int r,int x)
+{
+    int mid;
+    if(l>r) return 0;
+    
+    mid=l+(r-l)/2;
+    if(a[mid]==x)
+    return mid;
+    
+    if(x<a[mid])
+    return ceilindex(a,l,mid-1,x);
+    
+    return ceilindex(a,mid+1,r,x);
+    
+}
+
+void swap(int *a,int *b)
+{
+    int t=*a;
+    *a=*b;
+    *b=t;
+}
+
+void reverse(int a[],int n)
+{
+    int i=0,j=n-1;
+    while(i<j)
+    swap(&a[i++],&a[j--]);
+}
+
+void getLongestBitonicSeqLength(int a[],int n)
+{
+    // Auxiliary array to store input array 
+    //in same order to calculate Longest Increasing sequence (LIS)
+    int increasing[n];
+    int tail1[n];
+    int ans=0;
+    // Aux array storing the input array 
+    // in reverse order to calculate LIS: 
+    // This will calculate Longest Decreasing 
+    // Subsequence which is required for 
+    // Longest Bitonic Subsequence  
+    int decreasing[n];
+    int tail2[n];
+    
+     increasing[0]=a[0];
+    int index=1;
+     tail1[0]=0;
+    
+    for(int i=1;i<n;i++)
+    {
+        if(a[i]<increasing[0])
+        {
+            increasing[0]=a[i];
+            tail1[i]=0;
+        }
+        else if(a[i]>increasing[index-1])
+        {
+            increasing[index++]=a[i];
+            tail1[i]=index-1;
+        }
+        else{
+            increasing[ceilindex(increasing,-1,index-1,a[i])]=a[i];
+            tail1[i]=ceilindex(increasing,-1,index-1,a[i]);
+        }
+    }
+    
+    index = 1;
+    reverse(a,n);
+    
+    decreasing[0]=a[0];
+    tail2[0]=0;
+    
+    for(int i=1;i<n;i++)
+    {
+        if(a[i]<decreasing[0])
+        {
+            decreasing[0]=a[i];
+            tail2[i]=0;
+        }
+        else if(a[i]>decreasing[index-1])
+        {
+            decreasing[index++]=a[i];
+            tail2[i]=index-1;
+        }
+        else{
+           decreasing[ceilindex(decreasing,-1,index-1,a[i])]=a[i];
+            tail2[i]=ceilindex(decreasing,-1,index-1,a[i]);
+        }
+    }
+    
+    reverse(a,n);
+    reverse(tail2,n);
+    
+    for(int i=0;i<n;i++)
+    if(ans<(tail1[i]+tail2[i]+1))
+    ans=tail1[i]+tail2[i]+1;
+    
+    printf("%d\t",ans);
+}
+
+int main()
+{
+    int a[]={ 0, 8, 4, 12, 2, 10, 6, 14, 
+                  1, 9, 5, 13, 3, 11, 7, 15 };
+    int n=sizeof(a)/sizeof(a[0]);
+    getLongestBitonicSeqLength(a,n);
+    
+    return 0;
+}
