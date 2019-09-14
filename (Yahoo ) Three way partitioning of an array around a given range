@@ -1,0 +1,47 @@
+//Time complexity : O(n)
+
+//Yahoo question
+
+#include <stdio.h>
+
+void swap(int *a,int *b)
+{
+    int t=*a;
+    *a=*b;
+    *b=t;
+}
+
+void partition(int a[],int n,int l,int h)
+{
+    int s=0,e=n-1;
+    for(int i=0;i<=e;)
+    {
+    	//if current element is smaller than l value, 
+    	// place it in next smaller position
+        if(a[i]<l)
+        swap(&a[i++],&a[s++]);
+        
+        //if current element is greater than h value,
+        //then place it in next greater element
+        else if(a[i]>h)
+        swap(&a[i],&a[e--]);
+        
+       else
+       i++;
+    }
+    
+    
+}
+
+int main()
+{
+   int a[]={1, 14, 5, 20, 4, 2, 54, 20, 87, 98, 3, 1, 32};
+   int n=sizeof(a)/sizeof(a[0]);
+   
+   partition(a,n,14,20);
+   
+   for(int i=0;i<n;i++)
+    printf("%d\t",a[i]);
+
+    return 0;
+}
