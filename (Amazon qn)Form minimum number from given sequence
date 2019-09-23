@@ -1,0 +1,72 @@
+
+#include <stdio.h>
+#include <string.h>
+
+void display(char c[])
+{
+    int last_entry=0,currmax=0,j;
+    
+    for(int i=0;i<strlen(c);i++)
+    {
+        int noofNextD=0;
+        switch(c[i])
+        {
+            case 'I':
+            j=i+1;
+            
+            //calculate the no of next D's available
+            while(c[j]=='D' && j<strlen(c))
+            {
+                noofNextD++;
+                j++;
+            }
+            
+            if(i==0)
+            {
+                currmax = noofNextD+2;
+                printf("%d %d ",++last_entry,currmax);
+                last_entry=currmax;
+            }
+            else{
+                currmax = currmax+noofNextD+1;
+                last_entry=currmax;
+                
+                printf("%d ",last_entry);
+            }
+          
+            break;
+            
+            case 'D':
+            
+            if(i==0)
+            {
+            j=i+1;
+            
+              //calculate the no of next D's available
+            while(c[j]=='D' && j<strlen(c))
+            {
+                j++;
+                noofNextD++;
+            }
+            
+           currmax = noofNextD+2;
+           
+           printf("%d %d ",currmax, currmax-1);
+           last_entry=currmax-1;
+                
+           }
+            else
+            {
+                printf("%d ",last_entry-1);
+                last_entry--;
+            }
+            break;
+        }
+    }
+}
+int main()
+{
+    char c[]="IDID";
+  display(c);
+    return 0;
+}
