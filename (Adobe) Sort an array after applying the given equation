@@ -1,0 +1,30 @@
+//Time complexity : O(nlogn)
+#include <stdio.h>
+
+int cmp(const void *a,const void *b)
+{
+    return (*(int*)a-*(int*)b);
+}
+
+void sort(int a[],int n,int x,int y,int z)
+{
+    int s=0,res[n];
+    for(int i=0;i<n;i++)
+    {
+        res[s++]=((a[i]*a[i]*x)+(a[i]*y)+z);
+    }
+    qsort(res,s,sizeof(int),cmp);
+    
+    for(int i=0;i<s;i++)
+    printf("%d ",res[i]);
+}
+int main()
+{
+int a[]={-1, 0, 1, 2, 3, 4} ,A = -1, B = 2, C = -1;   
+int n=sizeof(a)/sizeof(a[0]);
+
+
+
+sort(a,n,A,B,C);
+    return 0;
+}
