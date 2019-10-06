@@ -1,0 +1,48 @@
+
+#include <stdio.h>
+#define n 4
+void rotateNinetyDegree(int a[][n])
+{
+    int temp;
+    for(int i=0;i<n/2;i++)
+    {
+        for(int j=i;j<n-1-i;j++)
+        {
+            temp = a[i][j];
+            
+            //move right to top
+            a[i][j]=a[j][n-1-i];
+            
+            //move bottom to right
+            a[j][n-1-i]=a[n-1-i][n-1-j];
+            
+            //move left to bottom
+            a[n-1-i][n-1-j]=a[n-1-j][i];
+            
+            //move top to bottom
+            a[n-1-j][i]=temp;
+        }
+    }
+    
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            printf("%d ",a[i][j]);
+        }
+        printf("\n");
+    }
+}
+
+int main()
+{
+    int a[][n]= { 
+        {1, 2, 3, 4}, 
+        {5, 6, 7, 8}, 
+        {9, 10, 11, 12}, 
+        {13, 14, 15, 16} 
+    }; 
+    
+    rotateNinetyDegree(a);
+    return 0;
+}
