@@ -1,0 +1,85 @@
+
+#include <stdio.h>
+
+void rotateMatrix(int a[][4],int m,int n)
+{
+    int cur,r=0,c=0,p;
+    
+    /* r - starting row
+       m - ending row 
+       c - starting column
+       n - ending column*/
+   
+    while(r<m && c<n)
+    {
+      p=a[r+1][c];      
+            
+    // first row
+    for(int i=c;i<n;i++)
+    {
+        cur = a[r][i];
+        a[r][i]=p;
+        p=cur;
+    }
+    r++;
+       
+   //last column
+    for(int i=r;i<m;i++)
+    {
+        cur = a[i][n-1];
+        a[i][n-1]=p;
+        p=cur;
+    }
+    n--;
+     
+     
+    //last row
+    if(r<m)
+    {
+        for(int i=n-1;i>=c;i--)
+        {
+            cur = a[m-1][i];
+            a[m-1][i]=p;
+            p=cur;
+        }
+    }
+    m--;
+    
+    
+   //first column
+    if(c<n)
+    {
+        for(int i=m-1;i>=r;i--)
+        {
+            cur = a[i][c];
+            a[i][c]=p;
+            p=cur;
+        }
+    }
+    c++;
+}
+
+    for(int i=0;i<4;i++)
+    {
+        for(int j=0;j<4;j++)
+    {
+        printf("%d ",a[i][j]);
+    }
+    printf("\n");
+    }
+}
+
+int main()
+{
+    int a[][4] = 
+      { {1,  2,  3,  4}, 
+        {5,  6,  7,  8}, 
+        {9,  10, 11, 12}, 
+        {13, 14, 15, 16}  }; 
+        
+  int n=sizeof(a)/sizeof(a[0]);
+  
+  rotateMatrix(a,n,4);
+
+    return 0;
+}
