@@ -1,0 +1,55 @@
+//Yahoo question
+// Time Complexity : O(n*n)
+
+#include <stdio.h>
+
+void printCoils(int n)
+{
+    // no of elements of each coil 
+    int m = 8*n*n;
+    int coil1[m],coil2[m];
+    int nflag=1,step=2,index=1;
+    int cur;
+    
+    coil1[0]= 8*n*n+2*n*n;
+    cur=coil1[0];
+    while(index<m)
+    {
+        // dowm to top
+        for(int i=0;i<step;i++)
+        {
+            cur = coil1[index++] = (cur - (4*n*nflag));
+            if(index>=m)
+            break;
+        }
+        
+        //top to dowm
+        for(int i=0;i<step;i++)
+        {
+            cur = coil1[index++] = cur + nflag;
+            if(index>=m)
+            break;
+        }
+        
+        nflag = nflag * (-1);
+        step += 2;
+    }
+    
+    //for coil2
+    for(int i=0;i<8*n*n;i++){
+    coil2[i] = 16*n*n + 1  - (coil1[i]);
+    }
+    
+    for(int i=0;i<8*n*n;i++)
+    printf("%d ",coil1[i]);
+    printf("\n");
+    for(int i=0;i<8*n*n;i++)
+    printf("%d ",coil2[i]);
+}
+int main()
+{
+    int n=1;
+    printCoils(n);
+
+    return 0;
+}
