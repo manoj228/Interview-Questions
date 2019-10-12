@@ -1,0 +1,67 @@
+#include <stdio.h>
+
+struct bin
+{
+    int x,y;
+};
+int main()
+{
+int a[][10] ={{1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
+                  {1, 0, 1, 0, 1, 1, 1, 0, 1, 1 },
+                  {1, 1, 1, 0, 1, 1, 0, 1, 0, 1 },
+                  {0, 0, 0, 0, 1, 0, 0, 0, 0, 1 },
+                  {1, 1, 1, 0, 1, 1, 1, 0, 1, 0 },
+                  {1, 0, 1, 1, 1, 1, 0, 1, 0, 0 },
+                  {1, 0, 0, 0, 0, 0, 0, 0, 0, 1 },
+                  {1, 0, 1, 1, 1, 1, 0, 1, 1, 1 },
+                  {1, 1, 0, 0, 0, 0, 1, 0, 0, 1 }};
+int r=9,c=10,cnt=0;
+
+struct bin s,d;
+s.x=0,s.y=0;
+d.x=3,d.y=4;
+
+while(1)
+{
+	
+	//bottom
+	if(a[s.x+1][s.y]==1)
+    {cnt++;
+        s.x=s.x+1;
+        s.y=s.y;
+        a[s.x][s.y]=0;
+      
+    }
+    //right
+    else if(a[s.x][s.y+1]==1)
+    {cnt++;
+        s.x=s.x;
+        s.y=s.y+1;
+        a[s.x][s.y]=0;
+    }
+    
+    //top
+    else if(a[s.x-1][s.y]==1)
+    {cnt++;
+        s.x=s.x-1;
+        s.y=s.y;
+        a[s.x][s.y]=0;
+    }
+    
+    //left
+    else
+    {
+    	cnt++;
+    	s.x=s.x;
+        s.y=s.y-1;
+        a[s.x][s.y]=0;
+    }
+    
+    if(s.x==d.x && s.y==d.y)
+    break;
+    
+}printf("%d",cnt);
+
+    return 0;
+}
+
