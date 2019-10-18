@@ -1,0 +1,61 @@
+
+#include <stdio.h>
+
+//conditions for tic-tac-toe
+int win[8][3]= {0,1,2,  // first row
+                3,4,5,  // second row
+                6,7,8,  // third row
+                0,3,6,  // first column
+                1,4,7,  // ssecond column
+                2,5,8,  // third column 
+                0,4,8,  // left diagonal
+                2,4,6}; // right diagonal
+                
+                
+int isWin(char board[],char c)
+{
+    for(int i=0;i<8;i++)
+    {
+        if(board[win[i][0]]==c && board[win[i][1]]==c && board[win[i][2]]==c)
+        return 1;
+    }
+    return 0;
+}
+
+int validity(char board[9],int n)
+{
+    int cntx=0,cnto=0;
+    for(int i=0;i<n;i++)
+    {
+        if(board[i]=='X') cntx++;
+        if(board[i] == 'O') cnto++;
+    }
+    
+    if(cntx == cnto || cntx == cnto+1)
+    {
+        if(isWin(board,'O'))
+        {
+            if(isWin(board,'X'))
+            return 0;
+            
+            return (cnto==cntx);
+        }
+        
+        if(isWin(board,'X') && cntx != cnto+1)
+        return 0;
+        
+        return 1;
+    }
+    
+    return 0;
+}
+int main()
+{
+ char board[9] =  {'O', 'X', 'X', 
+                   'O', 'X', 'X',
+                   'O', 'O', 'X'};
+    
+    validity(board,9)? printf("Valid") : printf("Invlaid");
+
+    return 0;
+}
