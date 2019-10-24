@@ -1,0 +1,83 @@
+
+#include <stdio.h>
+
+int min(int a,int b,int c)
+{
+    if(a<b && a<c)
+    return a;
+    else if(b<c)
+    return b;
+    else
+    return c;
+}
+void largeRect(int a[][5],int r,int c)
+{
+  int m[r][c];
+  
+  //fill first row
+  for(int i=0;i<c;i++)
+  m[0][i]=a[0][i];
+  
+  //fill first col 
+  for(int i=0;i<r;i++)
+  m[i][0]=a[i][0];
+  
+  //fill rem 
+  for(int i=1;i<r;i++)
+  {
+      for(int j=1;j<c;j++)
+      {
+          if(a[i][j]==1)
+          {
+              m[i][j]=min(m[i][j-1],m[i-1][j],m[i-1][j-1]) +1;
+          }
+          else
+          m[i][j]=0;
+      }
+  }
+  //m[r][c]
+  for(int i=0;i<r;i++)
+  {
+      for(int j=0;j<c;j++)
+      {
+          printf("%d ",m[i][j]);
+      }
+      printf("\n");
+  }
+ int max=m[0][0],mi,mj;
+  for(int i=0;i<r;i++)
+  {
+      for(int j=0;j<c;j++)
+      {
+          if(max<m[i][j])
+          {
+              max=m[i][j];
+              mi=i;
+              mj=j;
+          }
+      }
+  }
+  
+  //find max square
+  for(int i=mi;i>mi-max;i--)
+  {
+      for(int j=mj;j>mj-max;j--)
+      {
+          printf("%d ",a[i][j]);
+      }
+      printf("\n");
+  }
+}
+
+int main()
+{
+    int a[6][5] ={  {0, 1, 1, 0, 1},  
+                    {1, 1, 0, 1, 0},  
+                    {0, 1, 1, 1, 0},  
+                    {1, 1, 1, 1, 0},  
+                    {1, 1, 1, 1, 1},  
+                    {0, 0, 0, 0, 0}};  
+    int r=6,c=5;
+    largeRect(a,r,c);
+    return 0;
+}
