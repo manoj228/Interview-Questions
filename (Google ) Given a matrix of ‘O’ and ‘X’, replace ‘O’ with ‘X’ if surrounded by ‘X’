@@ -1,0 +1,94 @@
+// Time complexity : O(n*n)
+#include <stdio.h>
+
+
+/*
+Steps : 
+1) replace 'O' with '-'
+2) replace  '-' with 'O' based on floodfill (North ,east,south,west)
+3) replace '-' with 'X'
+*/
+
+void floodfill(char a[][6],int x,int y,char pre,char new)
+{
+    if(a[x][y]!=pre)
+    return;
+    
+    a[x][y]=new;
+    
+    //recursion for north,east,south and west
+    floodfill(a,x+1,y,pre,new);
+    floodfill(a,x-1,y,pre,new);
+    floodfill(a,x,y+1,pre,new);
+    floodfill(a,x,y-1,pre,new);
+}
+void replace(char a[][6],int n)
+{
+    //fill 'O' with '-'
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            if(a[i][j]=='O')
+            a[i][j]='-';
+        }
+    }
+    
+    
+    //replace '-' with 'O' for first row, first column, last row,last column
+    
+    //first column
+    for(int i=0;i<n;i++)
+    if(a[i][0]=='-')
+    floodfill(a,i,0,'-','O');
+    
+    //first row
+    for(int i=0;i<n;i++)
+    if(a[0][i]=='-')
+     floodfill(a,0,i,'-','O');
+    
+    //last col
+    for(int i=0;i<n;i++)
+    if(a[i][n-1]=='-')
+     floodfill(a,i,n-1,'-','O');
+    
+    //last col
+    for(int i=0;i<n;i++)
+    if(a[n-1][i]=='-')
+     floodfill(a,n-1,i,'-','O');
+    
+    
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            if(a[i][j] == '-')
+            a[i][j] = 'X';
+        }
+    }
+    
+    
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            printf("%c ",a[i][j]);
+        }printf("\n");
+    }
+
+}
+int main()
+{
+    char a[][6]={    {'X', 'O', 'X', 'X', 'X', 'X'},
+                     {'X', 'O', 'X', 'X', 'O', 'X'},
+                     {'X', 'X', 'X', 'O', 'O', 'X'},
+                     {'O', 'X', 'X', 'X', 'X', 'X'},
+                     {'X', 'X', 'X', 'O', 'X', 'O'},
+                     {'O', 'O', 'X', 'O', 'O', 'O'},
+                    };
+    int n=6;
+    replace(a,n);
+    
+
+    return 0;
+}
