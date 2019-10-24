@@ -1,0 +1,37 @@
+
+#include <stdio.h>
+
+void process(int a[][5],int si,int sj,int ei,int ej)
+{
+    int s=0;
+    for(int i=si;i<=ei;i++)
+    {
+        for(int j=sj;j<=ej;j++)
+        {
+            s+=a[i][j];
+        }
+    }
+    printf("%d",s);
+}
+
+int main()
+{
+    int a[4][5]=   {{1, 2, 3, 4, 6},
+                    {5, 3, 8, 1, 2},
+                    {4, 6, 7, 5, 5},
+                    {2, 4, 8, 9, 4} };
+    //query 1     
+    int ti1=0,tj1=0,ri1=1,rj1=1;
+    
+    //query 2
+    int ti2=2,tj2=2,ri2=3,rj2=4;
+    
+    //query 3 
+    int ti3=1,tj3=2,ri3=3,rj3=3;
+
+    process(a,ti1,tj1,ri1,rj1);
+    //process(a,ti2,tj2,ri2,rj2);
+ //   process(a,ti3,tj3,ri3,rj3);
+    
+    return 0;
+}
