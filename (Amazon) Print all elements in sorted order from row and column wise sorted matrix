@@ -1,0 +1,43 @@
+//Time complexity : O(n*n)
+
+#include <stdio.h>
+
+int cmp(const void *a,const void *b)
+{
+    return *(int*)a-*(int*)b;
+}
+void sort(int a[][4],int n)
+{
+    int temp[n*n],t=0;
+    
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            temp[t++]=a[i][j];
+        }
+    }
+    qsort(temp,t,sizeof(int),cmp) ;
+    
+    for(int i=0;i<t;i++)
+    {
+        printf("%d ",temp[i]);
+    }
+    
+}
+int main()
+{
+   int a[][4] ={ {10, 20, 30, 40},
+                 {15, 25, 35, 45},
+                 {27, 29, 37, 48},
+                 {32, 33, 39, 50},
+                  };
+   int n=4;
+ 
+   sort(a,n);
+   
+   
+   //printSorted(a,n);
+   
+    return 0;
+}
