@@ -1,0 +1,59 @@
+//Time complexity  :O(mn)
+//Microsoft , Samsung
+#include <stdio.h>
+
+int max(int a,int b)
+{
+    return (a>b) ? a : b;
+}
+int min(int a,int b)
+{
+    return (a<b)  ? a : b;
+}
+void minp(int a[][3],int r,int c)
+{
+    int m=r,n=c;
+    int dp[r][c];
+    
+    dp[m-1][n-1] = a[m-1][n-1] > 0 ? 1 : abs(a[m-1][n-1])+1;
+    
+    // fill last col 
+    for(int i=m-2;i>=0;i--)
+    dp[i][n-1] = max( dp[i+1][n-1] - a[i][n-1] , 1);
+    
+    //fill last row 
+    for(int j=n-2;j>=0;j--)
+    dp[m-1][j] = max( dp[m-1][j+1] - a[m-1][j] , 1);
+    
+    //fill rem
+    for(int i=m-2;i>=0;i--)
+    {
+        for(int j=n-2;j>=0;j--)
+        {
+            int minpoints = min (dp[i+1][j],dp[i][j+1]);
+            dp[i][j] = max(minpoints-a[i][j],1);
+        }
+    }
+    
+    printf("%d\n",dp[0][0]);
+    
+    for(int i=0;i<m;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            printf("%d ",dp[i][j]);
+        }printf("\n");
+    }
+}
+int main()
+{
+    int a[][3]={      {-2,-3,3}, 
+                      {-5,-10,1}, 
+                      {10,30,-5} 
+                    }; 
+   int r=3,c=3;
+   
+   minp(a,r,c);
+
+    return 0;
+}
