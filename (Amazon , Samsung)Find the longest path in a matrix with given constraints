@@ -1,0 +1,67 @@
+//Time complexity : O(n*n)
+
+#include <stdio.h>
+#include <limits.h>
+
+int max(int a,int b)
+{
+    if(a>b)
+    return a;
+    else 
+    return b;
+    
+}
+int find(int i,int j,int a[][3],int dp[][3])
+{
+    int n=3;
+    
+    if(i<0 || i>n|| j<0|| j>n)
+    return 0;
+    
+    // already solved
+    if(dp[i][j]!=-1)
+    return dp[i][j];
+     
+    int x=INT_MIN,y=INT_MIN,z=INT_MIN,w=INT_MIN;
+    
+    if(j<n-1 && ((a[i][j]+1 )==a[i][j+1]))
+    x = 1+find(i,j+1,a,dp); 
+    
+    if(j>0 && ((a[i][j]+1 )==a[i][j-1]))
+    y = 1+find(i,j-1,a,dp); 
+    
+    if(i<n-1 && ((a[i][j]+1 )==a[i+1][j]))
+    z = 1+find(i+1,j,a,dp); 
+    
+    if(i>0 && ((a[i][j]+1 )==a[i-1][j]))
+    w = 1+find(i-1,j,a,dp); 
+    
+    return dp[i][j]=max(x,max(y,max(z,max(w,1))));
+}
+int LongestPath(int a[][3],int n)
+{
+    int dp[n][n];
+    memset(dp,-1,sizeof(dp));
+    int result=1;
+    for(int i=0;i<n;i++)
+    {
+        for(int j=0;j<n;j++)
+        {
+            if(dp[i][j]==-1)
+            find(i,j,a,dp);
+            
+            result=max(result,dp[i][j]);
+        }
+    }
+    return result;
+}
+int main()
+{
+    int a[][3] =  { { 1, 2, 9 }, 
+                      { 5, 3, 8 }, 
+                      { 4, 6, 7 } };
+   int n=3;
+   printf("%d",LongestPath(a,n));
+
+    return 0;
+}
