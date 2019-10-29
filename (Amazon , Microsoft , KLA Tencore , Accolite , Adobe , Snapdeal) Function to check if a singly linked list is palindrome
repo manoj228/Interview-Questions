@@ -1,0 +1,120 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    char data;
+    struct node *link;
+};
+
+struct node *root =NULL;
+
+void addatend(char d)
+{
+    struct node *temp;
+    temp = (struct node*)malloc(sizeof(struct node));
+    
+    temp->data=d;
+    temp->link = NULL;
+    
+    if(root==NULL)
+    root = temp;
+    
+    else
+    {
+        struct node *p=root;
+        
+        while(p->link !=NULL)
+        {
+            p=p->link;
+        }
+       
+        p->link = temp;
+        
+    }
+    
+}
+
+void display()
+{
+      struct node *temp = root;
+      
+      if(temp == NULL)
+      {
+          printf("No items found");
+      }
+      else
+      {
+          printf("Items are:\n");
+          while(temp != NULL)
+          {
+              
+              printf("%c->",temp->data);
+              temp = temp->link;
+          }
+      }
+}
+
+int palin(struct node **p,struct node *q)
+{
+    if(q==NULL)
+    return 1;
+    
+    int isp = palin(p,q->link);
+    if(isp==0)
+    return 0;
+    
+    int isp1=(q->data == (*p)->data);
+    
+    (*p) = (*p)->link;
+    return isp1;
+}
+int check(struct node *p)
+{
+   palin(&p,p);
+    
+}
+
+int length(struct node *p)
+{
+   if(p==NULL)
+   return 0;
+   
+   return 1+length(p->link);
+}
+
+int main()
+{
+   int ch;
+   while(1)
+   {
+       printf("\nLinked List Operation\n");
+       printf("1) Addatend\n");
+       printf("2) Display\n");
+       printf("3) Check\n");
+       printf("4) Length\n");
+       printf("4) Exit\n");
+       printf("Enter your choice\n");
+       scanf("%d",&ch);
+       switch(ch)
+       {
+           case 1: addatend('a');
+                   addatend('b');
+                   //addatend('a');
+           break;
+           
+           case 2: display();
+           break;
+           
+           case 3: check(root) ? printf("Palindrome") : printf("Not a Palindrome");
+           break;
+           
+           case 4: printf("Length of Linkedlist is %d",length(root));
+           break;
+           
+           case 5: exit(1);
+       }
+   }
+  
+    return 0;
+}
