@@ -1,0 +1,73 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *link;
+};
+
+void insert(struct node **p, int data)
+{
+    struct node *temp = (struct node *) malloc (sizeof(struct node));
+    
+    temp -> data = data;
+    
+    temp -> link = (*p);
+    
+    (*p) = temp;
+}
+
+void display(struct node *temp)
+{
+    while(temp)
+    {
+        printf("%d ",temp->data);
+        temp = temp -> link ;
+    }
+}
+
+struct node *sortintersect(struct node *a, struct node *b)
+{
+    if(a== NULL || b==NULL)
+    return NULL;
+    
+    if(a->data < b->data)
+    return sortintersect(a->link , b);
+    
+    if(a->data > b->data)
+    return sortintersect(a , b->link);
+    
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp -> data = a->data;
+    temp -> link = sortintersect(a->link , b->link);
+    
+    return temp;
+}
+
+
+int main()
+{
+    struct node *a=NULL , *b=NULL, *intersect = NULL ;
+              
+            // first list a
+            insert(&a,6);
+            insert(&a,5);
+            insert(&a,4);
+            insert(&a,3);
+            insert(&a,2);
+            insert(&a,1);
+            
+            //first list b
+            insert(&b,8);
+            insert(&b,6);
+            insert(&b,4);
+            insert(&b,2);
+            
+             intersect = sortintersect(a,b);
+             
+             display(intersect);
+    
+    return 0;
+}
