@@ -1,0 +1,72 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data ; 
+    struct node *link ;
+};
+
+void insert(struct node **p,int data)
+{
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    
+    temp -> data = data;
+    
+    temp -> link = (*p);
+    
+    (*p) = temp;
+    
+}
+
+void display(struct node *p)
+{
+    while(p)
+    {
+        printf("%d ",p->data);
+        p = p->link;
+    }
+}
+
+void findIntersect(struct node *p,struct node *q)
+{
+    int f=0;
+    while(p->link != NULL)
+    {
+        p=p->link;
+    }
+    
+    while(p->data != q->data)
+    {
+        q = q->link;
+        f=1;
+        break;
+    }
+    
+    if(f==1)
+    printf("Intersecting point : %d",q->data);
+}
+
+int main()
+{
+   struct node *a=NULL, *b=NULL ;
+   
+   insert(&a,15);
+   insert(&a,9);
+   insert(&a,6);
+   insert(&a,3);
+   
+   insert(&b,30);
+   insert(&b,15);
+   insert(&b,10);
+   
+   display(a);
+   printf("\n");
+   display(b);
+   printf("\n");
+   
+   findIntersect(a,b);
+
+    return 0;
+}
