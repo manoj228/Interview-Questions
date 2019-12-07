@@ -1,0 +1,75 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *link ;
+};
+
+void push(struct node **p,int data)
+{
+    struct node *temp = (struct node *) malloc (sizeof(struct node));
+    
+    temp -> data = data;
+    
+    temp -> link = *p;
+    
+    *p = temp;
+    
+}
+
+void display(struct node *t)
+{
+    while(t!=NULL)
+    {
+        printf("%d ",t->data);
+        t = t->link;
+    }
+}
+
+struct node *reverse(struct node *head,int k)
+{
+    struct node *curr = head ,*prev = NULL , *next = NULL;
+    int count = 0 ;
+    
+    while(curr != NULL && count < k)
+    {
+        next = curr -> link ;
+        curr -> link = prev ;
+        prev = curr;
+        curr = next;
+        
+        count++;
+    }
+    
+    if(next != NULL)
+    head -> link = reverse(curr , k);
+    
+    return prev ; 
+}
+
+int main()
+{
+   struct node *a =NULL  ;
+   int k=2;
+   push(&a,9);
+   push(&a,8);
+   push(&a,7);
+   push(&a,6);
+   push(&a,5);
+   push(&a,4);
+   push(&a,3);
+   push(&a,2);
+   push(&a,1);
+ 
+  display(a);
+  printf("\n");
+ 
+  a = reverse(a,3);
+  display(a);
+  
+
+    return 0;
+}
