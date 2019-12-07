@@ -1,0 +1,97 @@
+//Time complexity : O(n)
+//Amazon
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *link;
+};
+
+void push(struct node **p,int data)
+{
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    
+    temp -> data = data;
+    
+    temp -> link = (*p);
+    
+    (*p) = temp;
+}
+
+void display(struct node *t)
+{
+    while(t)
+    {
+        printf("%d ",t->data);
+        t = t->link;
+    }
+}
+
+void segregate(struct node **p)
+{
+    struct node *evenStart = NULL , *evenEnd = NULL;
+    struct node *oddStart = NULL , *oddEnd = NULL;
+    struct node *curr = *p;
+    int value;
+    while(curr)
+    {
+        value = curr -> data;
+        if(value % 2 ==0)
+        {
+            //even data
+            if(evenStart == NULL)
+            {
+            evenStart = curr;
+            evenEnd = evenStart;
+            }
+            else
+            {
+                evenEnd -> link = curr;
+                evenEnd = evenEnd -> link;
+            }
+        }
+        else
+        {
+            //odd data
+            if(oddStart == NULL)
+            {
+                oddStart = curr;
+                oddEnd = oddStart;
+            }
+            else
+            {
+                oddEnd -> link = curr;
+                oddEnd = oddEnd -> link;
+            }
+        }
+        
+        curr = curr -> link;
+    }
+    
+    if(evenStart == NULL || oddStart==NULL)
+    return ;
+    
+    evenEnd ->link = oddStart;
+    oddEnd -> link = NULL;
+    
+    (*p)=evenStart;
+}
+
+int main()
+{
+    struct node *a = NULL;
+    
+    push(&a,1);
+    push(&a,2);
+    push(&a,3);
+    push(&a,4);
+    push(&a,5);
+    push(&a,6);
+    
+    segregate(&a);
+    display(a);
+    
+    return 0;
+}
