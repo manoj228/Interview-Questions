@@ -1,0 +1,58 @@
+// C program to print reverse of a linked list 
+#include<stdio.h> 
+#include<stdlib.h> 
+
+
+struct Node 
+{ 
+	int data; 
+	struct Node* link; 
+}; 
+
+
+void printReverse(struct Node* head) 
+{ 
+	// Base case 
+	if (head == NULL) 
+	return; 
+	
+	printReverse(head->link); 
+
+	printf("%d ", head->data); 
+} 
+
+
+void push(struct Node **p, int new_data) 
+{ 
+	
+	struct Node* temp = (struct Node*) malloc(sizeof(struct Node)); 
+
+	temp->data = new_data; 
+
+	temp->link = (*p); 
+	
+	(*p) = temp; 
+} 
+
+void display(struct Node *t)
+{
+    while(t)
+    {
+        printf("%d ",t->data);
+        t = t->link;
+    }
+}
+int main() 
+{ 
+	
+	struct Node* head = NULL;	 
+	push(&head, 4); 
+	push(&head, 3); 
+	push(&head, 2); 
+	push(&head, 1); 
+	
+	display(head);
+	printf("\n");
+	printReverse(head); 
+	return 0; 
+} 
