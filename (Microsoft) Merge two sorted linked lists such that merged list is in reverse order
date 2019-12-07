@@ -1,0 +1,104 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *link ;
+};
+
+void push(struct node **p,int data)
+{
+    struct node *temp = (struct node *) malloc (sizeof(struct node));
+    
+    temp -> data = data;
+    
+    temp -> link = *p;
+    
+    *p = temp;
+    
+}
+
+void display(struct node *t)
+{
+    while(t)
+    {
+        printf("%d ",t->data);
+        t = t->link;
+    }
+}
+
+struct node *merge(struct node *a,struct node *b)
+{
+    struct node *res = NULL;
+    
+    if(a==NULL && b==NULL)
+    return NULL;
+    
+    while(a!=NULL && b!=NULL)
+    {
+        if(a->data <= b->data)
+        {
+            struct node *t = a -> link;
+            a->link = res ;
+            res = a;
+            a = t;
+        }
+        else
+        {
+         struct node *t = b-> link;
+            b->link = res ;
+            res = b;
+            b = t;   
+        }
+    }
+        // if only a is remaining then attach this to res 
+        while(a!=NULL)
+        {
+            struct node *t = a -> link;
+            a->link = res ;
+            res = a;
+            a = t;
+        }
+    
+    
+    // if only b is remaining then attach this to res 
+    while(b!=NULL)
+    {
+        struct node *t = b-> link;
+            b->link = res ;
+            res = b;
+            b = t;
+    }
+    
+    return res;
+}
+
+int main()
+{
+   struct node *a =NULL , *b =NULL;
+   
+   push(&a,40);
+   push(&a,15);
+   push(&a,10);
+   push(&a,5);
+   
+    push(&b,20);
+    push(&b,3);
+    push(&b,2);
+
+   display(a); 
+   printf("\n");
+   display(b);
+   
+   printf("\n");
+   
+   struct node *res = NULL;
+   
+   res = merge(a,b);
+   
+   display(res);
+
+    return 0;
+}
