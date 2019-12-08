@@ -1,0 +1,87 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *right ;
+    struct node *down;
+};
+
+void push(struct node **p,int data)
+{
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp -> right = NULL;
+    temp -> data = data ;
+    temp -> down = (*p);
+    (*p) = temp;
+}
+
+void display(struct node *t)
+{
+    while(t)
+    {
+        printf("%d ",t->data);
+        t=t->down;
+    }
+}
+
+//merge two lists 
+struct node *merge(struct node *a,struct node *b)
+{
+    if(a==NULL)
+    return b;
+    
+    if(b==NULL)
+    return a;
+    
+    
+    struct node *result ;
+    if(a->data <= b->data)
+    {
+        result = a ;
+        result -> down = merge(a->down , b);
+    }
+    else
+    {
+        result = b;
+        result -> down = merge(a,b->down);
+    }
+    
+    return result;
+}
+struct node* flatten(struct node *root)
+{
+    if(root==NULL || root->right == NULL)
+    return root;
+    
+    return merge(root , flatten(root->right));
+}
+
+int main()
+{
+    struct node *root = NULL;
+    push( &root, 30 );   
+    push( &root, 8 ); 
+    push( &root, 7 ); 
+    push( &root, 5 ); 
+  
+    push( &( root->right ), 20 ); 
+    push( &( root->right ), 10 ); 
+  
+    push( &( root->right->right ), 50 ); 
+    push( &( root->right->right ), 22 ); 
+    push( &( root->right->right ), 19 ); 
+  
+    push( &( root->right->right->right ), 45 ); 
+    push( &( root->right->right->right ), 40 ); 
+    push( &( root->right->right->right ), 35 ); 
+    push( &( root->right->right->right ), 20 ); 
+  
+    root = flatten(root);
+    
+    printf("\n");
+    display(root);
+    return 0;
+}
