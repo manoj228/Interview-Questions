@@ -1,0 +1,101 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *link , *random;
+};
+
+void display(struct node *p)
+{
+    while(p)
+    {
+        printf("%d %d\n",p->data , p-> random -> data);
+        p=p->link;
+    }
+}
+
+void *push(int data)
+{
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp -> data = data; 
+    temp -> link = NULL;
+    temp -> random = NULL;
+    
+}
+
+struct node *clone(struct node *start)
+{
+    struct node *curr = start , *temp;
+    
+    //insert additional node between the nodes
+    while(curr)
+    {
+        temp = curr -> link ;
+        
+        curr -> link = push(curr->data);
+        
+        curr -> link -> link = temp; 
+        
+        curr = temp;
+    }
+    
+    curr = start ;
+    // Adjust random pointers for newly added node
+    while(curr)
+    {
+        if(curr -> random)
+        curr -> link -> random = curr -> random ?  curr -> random -> link : curr -> random;
+        
+        curr = curr -> link ?  curr -> link -> link : curr -> link ;
+    }
+    
+    struct node *original = start , *copy = start -> link ;
+    
+    temp = copy ;
+    
+    //separate original and cloned list 
+    while(original && copy)
+    {
+        original -> link = original -> link ? original -> link -> link : original -> link ;
+        copy-> link = copy-> link ? copy  -> link -> link : copy -> link ;
+        
+        original = original -> link;
+        copy = copy -> link ;
+    }
+    
+    return temp ;
+}
+int main()
+{
+   struct node *a = push(1);
+   a -> link = push(2);
+   a -> link -> link = push(3);
+   a -> link -> link -> link = push(4);
+   a -> link -> link -> link -> link = push(5);
+  
+  
+  //1's random pointer to 3 
+  a -> random = a -> link -> link ;
+  
+  //2's random pointer to 1 
+  a -> link -> random = a ;
+  
+  //3's and 4's random pointer to 5 
+  a -> link -> link -> random = a -> link -> link -> link -> link ;
+  
+  a -> link -> link -> link -> random = a -> link -> link -> link -> link ;
+  
+  //5's random pointer to 2 
+  a -> link -> link -> link -> link -> random = a -> link ;
+  
+ // display(a);
+  
+  struct node *clonedlist = clone(a);
+  
+  display(clonedlist);
+  
+    return 0;
+}
