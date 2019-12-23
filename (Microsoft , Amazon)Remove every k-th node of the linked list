@@ -1,0 +1,84 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *link;
+};
+
+struct node *push(int data)
+{
+    struct node *t = (struct node *)malloc(sizeof(struct node));
+    t -> data = data;
+    t -> link = NULL ;
+    
+    return t ;
+}
+
+void display(struct node *a)
+{
+    while(a)
+    {
+        printf("%d ",a->data);
+        a = a-> link;
+    }
+}
+
+void deletenode(struct node *a)
+{
+     while(a)
+     {
+         struct node *t = a ->link;
+         a = t ;
+     }
+  
+}
+struct node *delete(struct node *a,int k)
+{
+ int count = 0;
+ struct node *p = a , *prev = NULL;
+ 
+ if(k==1)
+ a = NULL;
+ while(p)
+ {
+     count++;
+     if(count == k)
+     {
+         deletenode(prev->link);
+         prev -> link = p -> link;
+         count = 0;
+     }
+     
+     if(count != 0)
+     prev = p ;
+     
+     p = p -> link ;
+ }
+ return a;
+}
+int main()
+{
+    struct node *a = push(1);
+    a ->link = push(2);
+    a -> link -> link = push(3);
+    a -> link -> link -> link = push(4);
+    a -> link -> link -> link -> link = push(5);
+    a -> link -> link -> link -> link -> link = push(6);
+    a -> link -> link -> link -> link -> link -> link = push(7);
+    a -> link -> link -> link -> link -> link -> link -> link = push(8);
+    int k = 3;
+    
+    display(a);
+    
+    printf("\n");
+    
+    struct node *res = delete(a,k);
+    
+    
+    display(res);
+    
+    return 0;
+}
