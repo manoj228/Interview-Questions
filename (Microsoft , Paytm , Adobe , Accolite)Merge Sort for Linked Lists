@@ -1,0 +1,105 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *link;
+};
+
+struct node *push(int data)
+{
+    struct node *t = (struct node *)malloc(sizeof(struct node));
+    t -> data = data ;
+    t -> link = NULL ;
+    
+    return t;
+}
+
+void display(struct node *t)
+{
+    while(t)
+    {
+        printf("%d ",t->data);
+        t = t-> link;
+    }
+}
+
+void frontbacksplit(struct node *source , struct node **front , struct node **back)
+{
+    struct node *slow = source ;
+    struct node *fast = source -> link;
+    
+    while(fast)
+    {
+        fast = fast -> link ;
+        if(fast)
+        {
+            slow = slow -> link ;
+            fast = fast -> link ;
+        }
+    }
+    
+    //slow is one step previous from mid
+    *front = source ;
+    *back = slow -> link ;
+     slow -> link = NULL ;
+     
+}
+
+struct node *sortMerge(struct node *a, struct node *b)
+{
+    struct node *result = NULL ;
+    
+    // if only list 
+    if(a == NULL)
+    return (b);
+    else if(b == NULL)
+    return (a); 
+    
+    if(a->data < b->data)
+    {
+        result = a;
+        result -> link = sortMerge(a->link,b);
+    }
+    else
+    {
+        result = b;
+        result -> link = sortMerge(a,b->link);
+    }
+    
+    return result; 
+}
+void mergesort(struct node **p)
+{
+    struct node *a = NULL , *b = NULL , *head = *p;
+    
+    // base cases
+    if(head == NULL || head -> link == NULL)
+    return ;
+    
+    frontbacksplit(head,&a,&b);
+    
+    mergesort(&a);
+    mergesort(&b);
+    
+    *p = sortMerge(a,b);
+    
+}
+int main()
+{
+    struct node *a = push(40);
+    a -> link = push(30);
+    a -> link -> link = push(10);
+    a -> link -> link -> link = push(50);
+    a -> link -> link -> link -> link = push(20);
+    
+    display(a);
+    printf("\n");
+    
+    mergesort(&a);
+    
+    display(a);
+    return 0;
+}
