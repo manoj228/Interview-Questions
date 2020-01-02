@@ -1,0 +1,106 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *link,*prev;
+};
+
+void insert(struct node **head,int data)
+{
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp -> data = data;
+    temp -> link = temp -> prev = NULL;
+    
+    if((*head) == NULL)
+    (*head) = temp ;
+    else
+    {
+        temp -> link = (*head) ;
+        (*head) -> prev = temp;
+        (*head) = temp;
+    }
+}
+
+void display(struct node *a)
+{
+    while(a)
+    {
+        printf("%d ",a->data);
+        a = a->link;
+    }
+    printf("\n");
+}
+struct node *merge(struct node *first,struct node *second)
+{
+ if(!first)
+ return second;
+ 
+ if(!second)
+ return first;
+ 
+ //compare values
+ if(first -> data < second -> data)
+ {
+     first -> link = merge(first -> link , second );
+     first -> link -> prev = first;
+     first -> prev = NULL;
+     
+     return first;
+ }
+ else
+ {
+    second -> link = merge(first , second ->link );
+     second -> link -> prev = second;
+    second -> prev = NULL;
+     return second; 
+ }
+}
+struct node *split(struct node *head)
+{
+    struct node *fast = head , *slow = head;
+    
+    while(fast->link && fast->link->link)
+    {
+        fast = fast -> link -> link ;
+        slow = slow -> link ;
+    }
+    
+    struct node *temp = slow -> link;
+    slow -> link = NULL;
+   
+    return temp;
+}
+struct node *mergeSort(struct node *head)
+{
+    if(!head || !head -> link)
+    return head;
+    
+    struct node *second_half = split(head);
+    
+    head = mergeSort(head);
+    second_half = mergeSort(second_half);
+    
+    return merge(head,second_half);
+}
+
+int main()
+{
+    struct node *head = NULL; 
+    insert(&head,5); 
+    insert(&head,20); 
+    insert(&head,4); 
+    insert(&head,3); 
+    insert(&head,30); 
+    insert(&head,10); 
+    
+    display(head);
+   
+    head = mergeSort(head);
+    
+    display(head);
+
+    return 0;
+}
