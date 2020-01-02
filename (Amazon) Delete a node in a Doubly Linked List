@@ -1,0 +1,82 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    int data;
+    struct node *link,*prev;
+};
+
+void push(struct node **head,int data)
+{
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp -> data = data;
+    temp -> link = (*head);
+    temp -> prev = NULL;
+    
+    if((*head) != NULL)
+    (*head) -> prev = temp;
+    
+    (*head) = temp;
+}
+
+void display(struct node *a)
+{
+     struct node *last;
+    printf("Output in forward direction :");
+    while(a!=NULL)
+    {
+        printf("%d ",a->data);
+        last = a;
+        a = a->link;
+    }
+    printf("\n");
+    
+    printf("Output in reverse direction :");
+    while(last !=NULL)
+    {
+        printf("%d ",last->data);
+        last = last->prev;
+    }
+    
+}
+void deletenode(struct node **head,struct node *del)
+{
+    //base cases
+    if((*head) == NULL || del == NULL)
+    return ;
+    
+    //if head node is to be deleted 
+    if((*head) == del)
+    (*head) = del -> link ; 
+    
+    //if del node is not the last node 
+    if(del -> link != NULL)
+    del -> link -> prev = del -> prev;
+    
+    //if del node is not the first node 
+    if(del -> prev != NULL)
+    del -> prev -> link = del -> link ;
+    
+    free(del);
+    return;
+    
+}
+int main()
+{
+   struct node *head = NULL;
+
+   push(&head,4);
+   push(&head,3);
+   push(&head,2);
+   push(&head,1);
+   
+   deletenode(&head,head);                   // delete head node 
+   deletenode(&head,head->link);             // delete second node
+   deletenode(&head,head->link);
+   
+   display(head);
+
+    return 0;
+}
