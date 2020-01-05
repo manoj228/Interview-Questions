@@ -1,0 +1,89 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node 
+{
+    int data;
+    struct node *link;
+};
+
+struct queue
+{
+    struct node *stack;
+};
+
+void push(struct queue **a,int ndata)
+{
+    struct node *temp =(struct node *)malloc(sizeof(struct node));
+    
+    if(temp == NULL)
+    {
+        printf("stack overflow");
+        getchar();
+        exit(0);
+    }
+    temp -> data = ndata;
+    temp -> link = (*a);
+    (*a) = temp;
+}
+
+void enqueue(struct queue *q,int data)
+{
+    push(&q->stack,data);
+}
+
+int pop(struct queue **a)
+{
+    struct node *top ;
+    int res;
+    if((*a)==NULL)
+    {
+      printf("Stack underflow");
+        getchar(); 
+        exit(0);  
+    }
+    else
+    {
+        top = (*a);
+        res = top -> data;
+        (*a) = top->link;
+        free(top);
+        return res;
+    }
+}
+
+int dequeue(struct queue *q)
+{
+    int x,res; 
+    
+    if(q == NULL)
+    {
+        printf("Stack underflow");
+        getchar(); 
+        exit(0);
+    }
+    else if(q->stack->link == NULL)
+    return pop(&q->stack);
+    else
+    {
+        x = pop(&q->stack);
+        res =dequeue(q);
+        push(&q->stack,x);
+        return res;
+    }
+}
+
+int main()
+{ 
+    struct queue *q = (struct queue *)malloc(sizeof(struct queue)); 
+    q -> stack = NULL ;
+    
+    enqueue(q,1);
+    enqueue(q,2);
+    
+    printf("%d ",dequeue(q));
+    printf("%d ",dequeue(q));
+    
+    return 0;
+}
