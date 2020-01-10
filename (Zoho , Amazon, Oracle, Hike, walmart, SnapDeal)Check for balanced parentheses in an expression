@@ -1,0 +1,74 @@
+
+#include <stdio.h>
+#include <stdlib.h>
+
+struct node
+{
+    char data;
+    struct node* link;
+};
+
+void push(struct node **s,char data)
+{
+    struct node *temp = (struct node *)malloc(sizeof(struct node));
+    temp ->data = data;
+    temp -> link = (*s);
+    (*s) = temp;
+}
+
+int pop(struct node **s)
+{
+    char res;
+    struct node *top;
+    if((*s)!=NULL)
+    {
+        top = (*s) ;
+        res = top -> data;
+        (*s) = (*s) -> link;
+        free(top);
+        return res;
+    }
+}
+
+int ismatch(char c,char ch)
+{
+    if((c=='(' && ch==')') || (c=='{' && ch=='}') || (c=='[' && ch==']') )
+    return 1;
+    return 0;
+}
+int ispair(char expr[])
+{
+  int i=0;
+  struct node *s = NULL;
+  
+  while(expr[i])
+  {
+      if(expr[i] == '(' || expr[i] == '{' || expr[i] == '[') 
+      push(&s,expr[i]);
+      
+      if(expr[i] == ')' || expr[i] == '}' || expr[i] == ']')
+      {
+          if(s != NULL && !ismatch(pop(&s),expr[i]))
+          return 0;
+          
+      }
+      i++;
+  }
+  
+  if(s==NULL)
+  return 1;
+  else
+  return 0;
+}
+
+int main()
+{
+  char expr[100] = "{()}[]";  
+  
+  if(ispair(expr))
+  printf("Balanced");
+  else
+  printf("Not Balanced");
+  
+    return 0;
+}
