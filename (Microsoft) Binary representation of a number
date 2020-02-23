@@ -1,0 +1,23 @@
+
+#include <stdio.h>
+#include <math.h>
+
+int main()
+{
+   int n = 6  ;
+   unsigned long long int cnt = 0 , c = 0, b =0;
+   
+   while(n > 0)
+   {
+       int r = n % 2;
+       c = pow(10,cnt);
+       b += r * c;
+       n = n/2;
+       
+       cnt++;
+   }
+   
+   printf("%d",b);
+   
+    return 0;
+}
